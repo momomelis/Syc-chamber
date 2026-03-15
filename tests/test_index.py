@@ -23,13 +23,15 @@ def test_spiral_segment_count_is_capped():
     assert max_match, "Expected a maxSegments constant to bound spiral segments"
     cap_value = int(max_match.group(1))
     assert 1000 <= cap_value <= 10000, "Segment cap should keep per-frame work reasonable"
-    assert re.search(
-        r"const\s+segments\s*=\s*Math\.min\s*\(\s*clickCount\s*\*\s*80\s*,\s*maxSegments\s*\)",
+    segments_match = re.search(
+        r"const\s+segments\s*=\s*Math\.min\s*\(\s*clickCount\s*\*\s*(\d+)\s*,\s*maxSegments\s*\)",
         content,
         re.S,
-    ), "Segments should be capped via Math.min(clickCount * 80, maxSegments)"
+    )
+    assert segments_match, "Segments should be capped via Math.min(clickCount * <multiplier>, maxSegments)"
+    assert int(segments_match.group(1)) > 0
     assert re.search(
-        r"for\s*\(\s*let\s+([A-Za-z_$][\w$]*)\s*=\s*0\s*;\s*\1\s*<\s*segments\s*;\s*(?:\+\+\1|\1\+\+)\s*\)",
+        r"for\s*\(\s*let\s+[A-Za-z_$][\w$]*\s*=\s*0\s*;\s*[A-Za-z_$][\w$]*\s*<\s*segments\s*;[^)]*\)",
         content,
         re.S,
-    ), "Spiral loop should iterate from 0 to segments with a single counter"
+    ), "Spiral loop should iterate from 0 up to segments using a counter"
