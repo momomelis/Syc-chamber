@@ -22,5 +22,5 @@ def test_spiral_segment_count_is_capped():
     max_match = re.search(r"const\s+maxSegments\s*=\s*(\d+)", content)
     assert max_match, "Expected a maxSegments constant to bound spiral segments"
     assert int(max_match.group(1)) > 0
-    assert "const segments = Math.min(clickCount * 80, maxSegments);" in content
-    assert "for(let t=0; t<segments; t++)" in content
+    assert re.search(r"const\s+segments\s*=\s*Math\.min\(\s*clickCount\s*\*\s*80\s*,\s*maxSegments\s*\)", content)
+    assert re.search(r"for\s*\(\s*let\s+t\s*=\s*0\s*;\s*t\s*<\s*segments\s*;\s*t\+\+\s*\)", content)
