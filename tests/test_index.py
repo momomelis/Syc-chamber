@@ -21,6 +21,7 @@ def test_spiral_segment_count_is_capped():
     # Ensure a finite cap is applied to the click-influenced segment count
     max_match = re.search(r"const\s+maxSegments\s*=\s*(\d+)", content)
     assert max_match, "Expected a maxSegments constant to bound spiral segments"
-    assert int(max_match.group(1)) > 0
-    assert re.search(r"const\s+segments\s*=\s*Math\.min\(\s*clickCount\s*\*\s*80\s*,\s*maxSegments\s*\)", content)
-    assert re.search(r"for\s*\(\s*let\s+t\s*=\s*0\s*;\s*t\s*<\s*segments\s*;\s*t\+\+\s*\)", content)
+    cap_value = int(max_match.group(1))
+    assert 1000 <= cap_value <= 10000, "Segment cap should keep per-frame work reasonable"
+    assert re.search(r"const\s+segments\s*=\s*Math\.min\s*\(\s*clickCount\s*\*\s*80\s*,\s*maxSegments\s*\)", content)
+    assert re.search(r"for\s*\(\s*let\s+t\s*=\s*0\s*;\s*t\s*<\s*segments\s*;\s*(?:\+\+t|t\+\+)\s*\)", content)
