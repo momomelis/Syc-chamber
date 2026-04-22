@@ -6,7 +6,7 @@ This repository contains the source for the **MOMO 2025** landing page.
 
 - Clone or download this repository.
 - Open `index.html` in your web browser to view the page.
-- Edit `index.html` to customize the text, styling, or track list, then refresh the page to see your changes.
+- Edit `index.html` to customize text or tracks, then refresh to see changes.
 
 ## A Riddle
 
